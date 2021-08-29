@@ -12,12 +12,18 @@
     "pair",
     "pairing",
     "mob",
-    "group",
+    "group"
   ],
   "author": "Ryan J. Wessel",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ryanjwessel/pear/issues"
   },
-  "homepage": "https://github.com/ryanjwessel/pear#readme"
+  "homepage": "https://github.com/ryanjwessel/pear#readme",
+  "devDependencies": {
+    "@types/node": "^16.7.6",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  }
 }
