@@ -1,0 +1,22 @@
+{
+  "name": "pear",
+  "version": "1.0.0",
+  "description": "A frictionless tool for tracking pair programming activity on teams",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ryanjwessel/pear.git"
+  },
+  "keywords": [
+    "pair",
+    "pairing",
+    "mob",
+    "group",
+  ],
+  "author": "Ryan J. Wessel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryanjwessel/pear/issues"
+  },
+  "homepage": "https://github.com/ryanjwessel/pear#readme"
+}
