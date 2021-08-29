@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/ryanjwessel/pear.git"
   },
-  "bin": "./src/cli.js",
+  "bin": "./src/index.js",
   "keywords": [
     "pair",
     "pairing",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ryanjwessel/pear#readme",
   "devDependencies": {
+    "@types/inquirer": "^7.3.3",
     "@types/node": "^16.7.6",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.1",
