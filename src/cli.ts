@@ -6,10 +6,7 @@ export const pear = new Command();
 
 import './commands/init';
 import './commands/start';
-
-pear
-    .command('end')
-    .description('End a pair programming session')
+import './commands/end';
 
 pear
     .command('add')
