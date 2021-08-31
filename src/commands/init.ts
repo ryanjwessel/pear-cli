@@ -4,7 +4,7 @@ import { prompt } from "inquirer";
 import { pear } from "../cli";
 
 const createContributorsFile = (contributors: string[]) => {
-    console.info(chalk.yellow("Creating contributors file now"));
+    console.info(chalk.yellowBright("Creating .pear/contributors now"));
     writeFileSync("./.pear/contributors", contributors.join("\n"), { encoding: 'utf-8' });
 };
 
@@ -32,19 +32,26 @@ const addContributor = (contributors: string[]) => {
     });
   };
 
+const createGitIgnore = () => {
+    console.info(chalk.yellowBright("Creating .pear/.gitignore now"));
+    writeFileSync("./.pear/.gitignore", 'session', { encoding: 'utf-8' });
+};
+
 pear
   .command("init")
   .description("Initialize Pear in your project")
   .action(() => {
-    console.info(chalk.yellow("🍐 Thanks for adding Pear to your project!"));
+    console.info(chalk.yellowBright("🍐 Thanks for adding Pear to your project!"));
 
     if (!existsSync("./.pear")) {
-      console.info(chalk.yellow(".pear directory not found, creating it now."));
+      console.info(chalk.yellowBright(".pear directory not found, creating it now."));
       mkdirSync("./.pear");
     }
 
+    createGitIgnore();
+
     console.info(
-      chalk.yellow("Let's add contributors to your Pear configuration.")
+      chalk.yellowBright("Let's add contributors to your Pear configuration.")
     );
 
     const contributors: string[] = [];

@@ -6,7 +6,7 @@ import { pear } from "../cli";
 const contributors = readFileSync('./.pear/contributors', 'utf-8').split('\n');
 
 const createSessionFile = (pairs: string[]) => {
-    console.info(chalk.yellow("Creating pairing session file now"));
+    console.info(chalk.yellowBright("Creating pairing session file now"));
     writeFileSync("./.pear/session", pairs.join("\n"), { encoding: 'utf-8' });
 };
 
@@ -15,7 +15,7 @@ pear
     .description('Start a pair programming session')
     .action(() => {
         console.info(
-            chalk.yellow("Let's add some pairs to your current session.")
+            chalk.yellowBright("Let's add some pairs to your current session.")
         );
       
         prompt([
