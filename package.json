@@ -1,11 +1,11 @@
 {
-  "name": "pear",
+  "name": "pear-cli",
   "version": "1.0.0",
   "description": "A frictionless tool for tracking pair programming activity on teams",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ryanjwessel/pear.git"
+    "url": "git+ssh://git@github.com/ryanjwessel/pear-cli.git"
   },
   "bin": "./src/index.js",
   "keywords": [
@@ -17,9 +17,9 @@
   "author": "Ryan J. Wessel",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ryanjwessel/pear/issues"
+    "url": "https://github.com/ryanjwessel/pear-cli/issues"
   },
-  "homepage": "https://github.com/ryanjwessel/pear#readme",
+  "homepage": "https://github.com/ryanjwessel/pear-cli#readme",
   "devDependencies": {
     "@types/inquirer": "^7.3.3",
     "@types/node": "^16.7.6",
