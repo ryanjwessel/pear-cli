@@ -4,18 +4,19 @@ import chalk from "chalk";
 import { pear } from "../cli";
 
 const getContributors = () => {
-    if (existsSync('./.pear/contributors')) {
-        return readFileSync("./.pear/contributors", "utf-8").split("\n")
-    } else {
-        throw new Error('Could not find .pear/contributors. Run `pear init` to set this project up for use with the Pear CLI.');
-    }
+  if (existsSync("./.pear/contributors")) {
+    return readFileSync("./.pear/contributors", "utf-8").split("\n");
+  } else {
+    throw new Error(
+      "Could not find .pear/contributors. Run `pear init` to set this project up for use with the Pear CLI."
+    );
+  }
 };
 
 const createSessionFile = (pairs: string[]) => {
   console.info(chalk.yellowBright("Creating pairing session file now"));
   writeFileSync("./.pear/session", pairs.join("\n"), { encoding: "utf-8" });
 };
-
 
 pear
   .command("start")
