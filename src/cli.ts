@@ -5,10 +5,7 @@ import { Command } from 'commander';
 export const pear = new Command();
 
 import './commands/init';
-
-pear
-    .command('start')
-    .description('Start a pair programming session')
+import './commands/start';
 
 pear
     .command('end')

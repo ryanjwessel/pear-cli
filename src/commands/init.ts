@@ -5,7 +5,7 @@ import { pear } from "../cli";
 
 const createContributorsFile = (contributors: string[]) => {
     console.info(chalk.yellow("Creating contributors file now"));
-    writeFileSync("./.pear/contributors", contributors.join("\n"));
+    writeFileSync("./.pear/contributors", contributors.join("\n"), { encoding: 'utf-8' });
 };
 
 const addContributor = (contributors: string[]) => {
@@ -42,6 +42,7 @@ pear
       console.info(chalk.yellow(".pear directory not found, creating it now."));
       mkdirSync("./.pear");
     }
+
     console.info(
       chalk.yellow("Let's add contributors to your Pear configuration.")
     );
