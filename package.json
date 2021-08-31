@@ -7,7 +7,9 @@
     "type": "git",
     "url": "git+ssh://git@github.com/ryanjwessel/pear-cli.git"
   },
-  "bin": "./src/index.js",
+  "bin": {
+    "pear": "./src/index.js"
+  },
   "keywords": [
     "pair",
     "pairing",
