@@ -1,5 +1,6 @@
 import chalk from "chalk";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync, copyFileSync } from "fs";
+import path from 'path';
 import { prompt } from "inquirer";
 import { pear } from "../cli";
 
@@ -39,6 +40,11 @@ const createGitIgnore = () => {
   writeFileSync("./.pear/.gitignore", "session", { encoding: "utf-8" });
 };
 
+const createPearShellScript = () => {
+  console.info(chalk.yellowBright("Creating .pear/pear.sh now"));
+  copyFileSync(path.resolve("./src/pear.sh"), "./.pear/pear.sh",);
+};
+
 pear
   .command("init")
   .description("Initialize Pear in your project")
@@ -55,6 +61,7 @@ pear
     }
 
     createGitIgnore();
+    createPearShellScript();
 
     console.info(
       chalk.yellowBright("Let's add contributors to your Pear configuration.")
