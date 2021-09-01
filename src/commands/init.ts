@@ -42,7 +42,7 @@ const createGitIgnore = () => {
 
 const createPearShellScript = () => {
   console.info(chalk.yellowBright("Creating .pear/pear.sh now"));
-  copyFileSync(path.resolve("./src/pear.sh"), "./.pear/pear.sh",);
+  copyFileSync(path.join(__dirname, "../pear.sh"), "./.pear/pear.sh",);
 };
 
 pear
