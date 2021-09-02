@@ -7,6 +7,7 @@ export const pear = new Command();
 import './commands/init';
 import './commands/start';
 import './commands/end';
+import './commands/matrix';
 
 pear
     .command('add')
@@ -17,9 +18,5 @@ pear
     .command('remove')
     .description('Remove a contributor from your Pear configuration')
     .argument('<contributor>', 'The name of the contributor you are removing')
-
-pear
-    .command('matrix')
-    .description('Generate a pairing matrix based on your project\'s commit history')
 
 pear.parse(process.argv);
