@@ -14,7 +14,7 @@
     "prepublish": "tsc"
   },
   "bin": {
-    "pear": "./src/index.js"
+    "pear": "./dist/cli.js"
   },
   "keywords": [
     "pair",
