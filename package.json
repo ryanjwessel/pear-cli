@@ -4,6 +4,7 @@
   "description": "A frictionless tool for tracking pair programming activity on teams",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": ["dist/**/*"],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/ryanjwessel/pear-cli.git"
