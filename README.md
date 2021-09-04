@@ -51,6 +51,22 @@ npx pear end
 
 This will delete `./.pear/session`, and your commits will no longer be appended with the `Co-authors:` tag.
 
+### Adding a contributor
+
+```sh
+npx pear add "<contributor name>"
+```
+
+This will add the contributor to your `./.pear/contributors` file.
+
+### Removing a contributor
+
+```sh
+npx pear remove "<contributor name>"
+```
+
+This will remove the contributor from your `./.pear/contributors` file.
+
 ### Generate a pairing matrix
 
 ```sh
