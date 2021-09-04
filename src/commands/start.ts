@@ -2,7 +2,7 @@ import { writeFileSync } from "fs";
 import { prompt } from "inquirer";
 import chalk from "chalk";
 import { pear } from "../cli";
-import { getContributors } from "../getContributors";
+import { getContributors } from "../contributors";
 
 const createSessionFile = (pairs: string[]) => {
   console.info(chalk.yellowBright("Creating pairing session file now"));

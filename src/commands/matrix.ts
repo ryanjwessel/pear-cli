@@ -1,7 +1,7 @@
 import gitlog, { CommitField } from "gitlog";
 import { isEqual, parseISO } from "date-fns";
 import { writeFileSync } from "fs";
-import { getContributors } from "../getContributors";
+import { getContributors } from "../contributors";
 import { pear } from "../cli";
 
 const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {

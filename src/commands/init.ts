@@ -3,13 +3,7 @@ import { existsSync, mkdirSync, writeFileSync, copyFileSync } from "fs";
 import path from 'path';
 import { prompt } from "inquirer";
 import { pear } from "../cli";
-
-const createContributorsFile = (contributors: string[]) => {
-  console.info(chalk.yellowBright("Creating .pear/contributors now"));
-  writeFileSync("./.pear/contributors", contributors.join("\n"), {
-    encoding: "utf-8",
-  });
-};
+import { writeContributors } from "../contributors";
 
 const addContributor = (contributors: string[]) => {
   const questions = [
@@ -30,7 +24,7 @@ const addContributor = (contributors: string[]) => {
     if (moreToAdd) {
       addContributor(contributors);
     } else {
-      createContributorsFile(contributors);
+      writeContributors(contributors);
     }
   });
 };
