@@ -1,4 +1,4 @@
-# Pear CLI
+# 🍐 Pear CLI
 
 Pear CLI is a frictionless tool for tracking pair programming activity on teams.
 
