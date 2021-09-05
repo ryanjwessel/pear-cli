@@ -1,7 +1,6 @@
 import { writeFileSync } from "fs";
 import { prompt } from "inquirer";
 import chalk from "chalk";
-import { pear } from "../cli";
 import { getContributors } from "../contributors";
 
 const createSessionFile = (pairs: string[]) => {
@@ -9,25 +8,22 @@ const createSessionFile = (pairs: string[]) => {
   writeFileSync("./.pear/session", pairs.join("\n"), { encoding: "utf-8" });
 };
 
-pear
-  .command("start")
-  .description("Start a pair programming session")
-  .action(() => {
-    console.info(
-      chalk.yellowBright("Let's add some pairs to your current session.")
-    );
+export const start = () => {
+  console.info(
+    chalk.yellowBright("Let's add some pairs to your current session.")
+  );
 
-    const contributors = getContributors();
+  const contributors = getContributors();
 
-    prompt([
-      {
-        type: "checkbox",
-        name: "pairs",
-        message:
-          "Please select the contributors you will be pairing with in this session.",
-        choices: contributors,
-      },
-    ]).then(({ pairs }) => {
-      createSessionFile(pairs);
-    });
+  prompt([
+    {
+      type: "checkbox",
+      name: "pairs",
+      message:
+        "Please select the contributors you will be pairing with in this session.",
+      choices: contributors,
+    },
+  ]).then(({ pairs }) => {
+    createSessionFile(pairs);
   });
+};

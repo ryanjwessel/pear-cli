@@ -1,9 +1,20 @@
+import inquirer from "inquirer";
 import chalk from "chalk";
-import { existsSync, mkdirSync, writeFileSync, copyFileSync } from "fs";
-import path from 'path';
-import { prompt } from "inquirer";
-import { pear } from "../cli";
+import fs from "fs";
+import path from "path";
 import { writeContributors } from "../contributors";
+
+const { prompt } = inquirer;
+
+const createGitIgnore = () => {
+  console.info(chalk.yellowBright("Creating .pear/.gitignore now"));
+  fs.writeFileSync("./.pear/.gitignore", "session", { encoding: "utf-8" });
+};
+
+const createPearShellScript = () => {
+  console.info(chalk.yellowBright("Creating .pear/pear.sh now"));
+  fs.copyFileSync(path.join(__dirname, "../pear.sh"), "./.pear/pear.sh");
+};
 
 const addContributor = (contributors: string[]) => {
   const questions = [
@@ -29,38 +40,25 @@ const addContributor = (contributors: string[]) => {
   });
 };
 
-const createGitIgnore = () => {
-  console.info(chalk.yellowBright("Creating .pear/.gitignore now"));
-  writeFileSync("./.pear/.gitignore", "session", { encoding: "utf-8" });
-};
+export const init = () => {
+  console.info(
+    chalk.yellowBright("🍐 Thanks for adding Pear to your project!")
+  );
 
-const createPearShellScript = () => {
-  console.info(chalk.yellowBright("Creating .pear/pear.sh now"));
-  copyFileSync(path.join(__dirname, "../pear.sh"), "./.pear/pear.sh",);
-};
-
-pear
-  .command("init")
-  .description("Initialize Pear in your project")
-  .action(() => {
+  if (!fs.existsSync("./.pear")) {
     console.info(
-      chalk.yellowBright("🍐 Thanks for adding Pear to your project!")
+      chalk.yellowBright(".pear directory not found, creating it now.")
     );
+    fs.mkdirSync("./.pear");
+  }
 
-    if (!existsSync("./.pear")) {
-      console.info(
-        chalk.yellowBright(".pear directory not found, creating it now.")
-      );
-      mkdirSync("./.pear");
-    }
+  createGitIgnore();
+  createPearShellScript();
 
-    createGitIgnore();
-    createPearShellScript();
+  console.info(
+    chalk.yellowBright("Let's add contributors to your Pear configuration.")
+  );
 
-    console.info(
-      chalk.yellowBright("Let's add contributors to your Pear configuration.")
-    );
-
-    const contributors: string[] = [];
-    addContributor(contributors);
-  });
+  const contributors: string[] = [];
+  addContributor(contributors);
+};
