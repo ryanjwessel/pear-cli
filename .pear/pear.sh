@@ -11,7 +11,7 @@ if [ ! -f "$filename" ]; then
     exit 0;
 fi
 
-if [ ! -z "$SHA1"]; then
+if [ "$SHA1" ]; then
     # If SHA1 exists, we are amending a commit. Don't modify the message.
     exit 0;
 fi
