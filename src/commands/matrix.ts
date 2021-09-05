@@ -1,36 +1,28 @@
 import gitlog, { CommitField } from "gitlog";
 import { isEqual, parseISO } from "date-fns";
 import { writeFileSync } from "fs";
+import { markdownTable } from "markdown-table";
 import { getContributors } from "../contributors";
 import { pear } from "../cli";
 
 const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
-  let output = "| |";
-  // Add headers
-  for (const contributor in table) {
-    output += ` ${contributor} |`;
-  }
-  output += "\n|";
-  for (let i = 0; i <= Object.keys(table).length; i++) {
-    output += ` --- |`;
-  }
+  const matrix = [['', ...Object.keys(table)]];
 
-  // Add rows
   Object.keys(table).forEach((contributor, cIndex) => {
-    output += "\n";
-    output += `| ${contributor} |`;
+    let row = [contributor];
 
     Object.keys(table[contributor]).forEach((pair, pIndex) => {
       if (pIndex < cIndex) {
-        output += ` ${table[contributor][pair]} |`;
+        row.push(table[contributor][pair].toString());
       } else {
-        output += " |";
+        row.push('');
       }
     });
-    output += " |";
   });
 
-  return output;
+  return markdownTable(
+    matrix,
+  );
 };
 
 pear
@@ -133,6 +125,8 @@ pear
         }
       }
 
-      writeFileSync('./.pear/matrix.md', outputMarkdownTable(table), {encoding: 'utf-8'});
+      writeFileSync("./.pear/matrix.md", outputMarkdownTable(table), {
+        encoding: "utf-8",
+      });
     });
   });
