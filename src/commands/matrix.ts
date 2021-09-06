@@ -91,9 +91,11 @@ export const matrix = async ({ after }: { after: string }) => {
         warnings.push(
           `${authorName} is not a known contributor. See commit ${hash}`
         );
+        return;
       }
       if (!(pair in matrix)) {
         warnings.push(`${pair} is not a known contributor. See commit ${hash}`);
+        return;
       }
 
       const date = parseISO(authorDate.split(" ")[0]);
