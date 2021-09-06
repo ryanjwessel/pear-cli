@@ -303,6 +303,20 @@ pear-cli@^2.4.4:
     markdown-table "^3.0.1"
     typescript "^4.4.2"
 
+pear-cli@^2.4.7:
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/pear-cli/-/pear-cli-2.4.7.tgz#9868f62c23ca1bf8e30a394f0a97035406065e8f"
+  integrity sha512-5maQ7tui68tmj84fP/E1t1m7YZ/kzudSYj1glmpw8vPTJZ1EmPCD8YT3MsiyLET5Nu+Ak44RxI5Sc3kCRjpcNQ==
+  dependencies:
+    chalk "^4.1.2"
+    commander "^8.1.0"
+    date-fns "^2.23.0"
+    gitlog "^4.0.4"
+    inquirer "^8.1.2"
+    markdown-table "^3.0.1"
+    pear-cli "^2.4.4"
+    typescript "^4.4.2"
+
 readable-stream@^3.4.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.6.0.tgz#337bbda3adc0706bd3e024426a286d4b4b2c9198"
