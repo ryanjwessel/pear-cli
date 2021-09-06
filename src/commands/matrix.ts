@@ -3,6 +3,10 @@ import { isEqual, parseISO } from "date-fns";
 import fs from "fs";
 import { markdownTable } from "markdown-table";
 import { getContributors } from "../contributors.js";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
   const matrix = [["", ...Object.keys(table)]];

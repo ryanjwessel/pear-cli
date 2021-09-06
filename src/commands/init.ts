@@ -3,8 +3,11 @@ import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 import { writeContributors } from "../contributors.js";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const { prompt } = inquirer;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const createGitIgnore = () => {
   console.info(chalk.yellowBright("Creating .pear/.gitignore now"));
