@@ -1,10 +1,11 @@
-import gitlog, { CommitField } from "gitlog";
+import { gitlogPromise } from "gitlog";
 import { isEqual, parseISO } from "date-fns";
 import fs from "fs";
 import { markdownTable } from "markdown-table";
 import { getContributors } from "../contributors.js";
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import chalk from "chalk";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -26,7 +27,7 @@ const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
   return markdownTable(matrix);
 };
 
-export const matrix = ({ after }: { after: string }) => {
+export const matrix = async ({ after }: { after: string }) => {
   const CO_AUTHORS = "Co-authors: ";
 
   interface PairData {
@@ -55,10 +56,11 @@ export const matrix = ({ after }: { after: string }) => {
     repo: __dirname,
     number: 500,
     after,
-    fields: ["hash", "authorName", "authorDate", "body"] as CommitField[],
+    fields: ["hash", "authorName", "authorDate", "body"] as const,
   };
 
-  gitlog(options, (error, commits) => {
+  try {
+    const commits = await gitlogPromise(options);
     const pairingHistory = commits
       .filter(
         (commit) =>
@@ -117,5 +119,12 @@ export const matrix = ({ after }: { after: string }) => {
     fs.writeFileSync("./.pear/matrix.md", outputMarkdownTable(table), {
       encoding: "utf-8",
     });
-  });
+  } catch (error) {
+    console.error(chalk.redBright(error));
+    console.error(
+      chalk.redBright(
+        "Sorry, we were unable to generate a pairing matrix for your team."
+      )
+    );
+  }
 };
