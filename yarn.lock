@@ -290,6 +290,19 @@ os-tmpdir@~1.0.2:
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
   integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
 
+pear-cli@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/pear-cli/-/pear-cli-2.4.4.tgz#d2692a7ab7afab49da1cc9e516e01e6fe83da9b3"
+  integrity sha512-86P0BH1tIIYKPx95Pj5iKC8DHoDfWnOk/vs0N1I5qIfUCdhIXupyxsuAj/ly3GQ8SQtQ5ZT27yKakG6PFV+yNg==
+  dependencies:
+    chalk "^4.1.2"
+    commander "^8.1.0"
+    date-fns "^2.23.0"
+    gitlog "^4.0.4"
+    inquirer "^8.1.2"
+    markdown-table "^3.0.1"
+    typescript "^4.4.2"
+
 readable-stream@^3.4.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.6.0.tgz#337bbda3adc0706bd3e024426a286d4b4b2c9198"
