@@ -28,6 +28,6 @@ if [[ "$COMMIT_SOURCE" == "message" ]]; then
     # Append coauthors if user has provided a shorthand commit message
     echo "$(cat $COMMIT_MSG_FILE)\n\n${coauthors}\n" > "$COMMIT_MSG_FILE"
 else
-    # Prepend coauthors if user is using the 
+    # Prepend coauthors if user is using the commit editor
     echo "\n\n${coauthors}\n$(cat $COMMIT_MSG_FILE)" > "$COMMIT_MSG_FILE"
 fi
