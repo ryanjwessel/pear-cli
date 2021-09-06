@@ -22,6 +22,7 @@ const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
         row.push("");
       }
     });
+    matrix.push(row);
   });
 
   return markdownTable(matrix);
