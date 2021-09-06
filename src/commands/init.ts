@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import { writeContributors } from "../contributors";
+import { writeContributors } from "../contributors.js";
 
 const { prompt } = inquirer;
 

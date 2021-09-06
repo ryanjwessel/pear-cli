@@ -1,4 +1,4 @@
-import { getContributors, writeContributors } from "../contributors";
+import { getContributors, writeContributors } from "../contributors.js";
 
 export const remove = (removal: string) => {
   const contributors = getContributors().filter(

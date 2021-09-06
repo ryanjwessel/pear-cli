@@ -2,7 +2,7 @@ import gitlog, { CommitField } from "gitlog";
 import { isEqual, parseISO } from "date-fns";
 import fs from "fs";
 import { markdownTable } from "markdown-table";
-import { getContributors } from "../contributors";
+import { getContributors } from "../contributors.js";
 
 const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
   const matrix = [["", ...Object.keys(table)]];
