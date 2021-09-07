@@ -1,5 +1,5 @@
-import { gitlogPromise } from "gitlog";
-import { isEqual, parseISO } from "date-fns";
+import * as gitlog from "gitlog";
+import dateFn from "date-fns";
 import fs from "fs";
 import { markdownTable } from "markdown-table";
 import { getContributors } from "../contributors.js";
@@ -7,6 +7,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
 
+const {gitlogPromise } = gitlog;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
@@ -98,8 +99,8 @@ export const matrix = async ({ after }: { after: string }) => {
         return;
       }
 
-      const date = parseISO(authorDate.split(" ")[0]);
-      if (!isEqual(matrix[authorName][pair].lastPair, date)) {
+      const date = dateFn.parseISO(authorDate.split(" ")[0]);
+      if (!dateFn.isEqual(matrix[authorName][pair].lastPair, date)) {
         matrix[authorName][pair].count += 1;
         matrix[pair][authorName].count += 1;
       }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
+import commander from "commander";
 import { init } from "./commands/init.js";
 import { start } from "./commands/start.js";
 import { end } from "./commands/end.js";
@@ -8,7 +8,7 @@ import { matrix } from "./commands/matrix.js";
 import { add } from "./commands/add.js";
 import { remove } from "./commands/remove.js";
 
-const pear = new Command();
+const pear = new commander.Command();
 
 pear
   .command("init")
