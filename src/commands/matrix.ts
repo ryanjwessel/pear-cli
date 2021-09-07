@@ -1,4 +1,4 @@
-import * as gitlog from "gitlog";
+import gitlog from "gitlog";
 import dateFn from "date-fns";
 import fs from "fs";
 import { markdownTable } from "markdown-table";
@@ -7,7 +7,6 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
 
-const {gitlogPromise } = gitlog;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
@@ -61,8 +60,16 @@ export const matrix = async ({ after }: { after: string }) => {
     fields: ["hash", "authorName", "authorDate", "body"] as const,
   };
 
-  try {
-    const commits = await gitlogPromise(options);
+  gitlog(options, (error, commits) => {
+    if (error) {
+      console.error(chalk.redBright(error));
+      console.error(
+        chalk.redBright(
+          "Sorry, we were unable to generate a pairing matrix for your team."
+        )
+      );
+      throw new Error(error.toString());
+    }
     const pairingHistory = commits
       .filter(
         (commit) =>
@@ -123,12 +130,5 @@ export const matrix = async ({ after }: { after: string }) => {
     fs.writeFileSync("./.pear/matrix.md", outputMarkdownTable(table), {
       encoding: "utf-8",
     });
-  } catch (error) {
-    console.error(chalk.redBright(error));
-    console.error(
-      chalk.redBright(
-        "Sorry, we were unable to generate a pairing matrix for your team."
-      )
-    );
-  }
+  });
 };
