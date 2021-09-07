@@ -60,35 +60,28 @@ export const matrix = async ({ after }: { after: string }) => {
     fields: ["hash", "authorName", "authorDate", "body"] as const,
   };
 
-  gitlog(options, (error, commits) => {
-    if (error) {
-      console.error(chalk.redBright(error));
-      console.error(
-        chalk.redBright(
-          "Sorry, we were unable to generate a pairing matrix for your team."
-        )
-      );
-      throw new Error(error.toString());
-    }
+  try {
+    // @ts-ignore
+    const commits = await gitlog.gitlogPromise(options);
     const pairingHistory = commits
       .filter(
-        (commit) =>
+        (commit: Record<string, any>) =>
           commit.body.includes(CO_AUTHORS) && commit.body.split(CO_AUTHORS)[1]
       )
-      .flatMap(({ authorName, body, authorDate, hash }) => {
+      .flatMap(({ authorName, body, authorDate, hash }: Record<string, any>) => {
         const pairs = body
           .split(CO_AUTHORS)[1]
           .replace(/\n/g, " ")
           .trim()
           .split(", ");
-        return pairs.map((pair) => {
+        return pairs.map((pair: string) => {
           return { authorName, authorDate, pair, hash };
         });
       });
 
     const warnings: string[] = [];
 
-    pairingHistory.forEach(({ authorName, pair, hash, authorDate }) => {
+    pairingHistory.forEach(({ authorName, pair, hash, authorDate }: Record<string, any>) => {
       if (authorName === pair) {
         warnings.push(
           `Don't include yourself in the "${CO_AUTHORS}" line, ${authorName}. See commit ${hash}`
@@ -130,5 +123,12 @@ export const matrix = async ({ after }: { after: string }) => {
     fs.writeFileSync("./.pear/matrix.md", outputMarkdownTable(table), {
       encoding: "utf-8",
     });
-  });
+  } catch (error) {
+      console.error(chalk.redBright(error));
+      console.error(
+        chalk.redBright(
+          "Sorry, we were unable to generate a pairing matrix for your team."
+        )
+      );
+  }
 };
