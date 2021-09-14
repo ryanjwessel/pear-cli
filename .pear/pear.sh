@@ -16,13 +16,7 @@ if [ "$SHA1" ]; then
     exit 0;
 fi
 
-coauthors="Co-authors:"
-n=1
-while read line; do
-    coauthors="${coauthors} $line,"
-    n=$((n+1))
-done < $filename
-coauthors="$(echo $coauthors | sed 's/,$//g')" # Remove trailing comma
+coauthors="Co-authors: $(paste -s $filename | sed -e 's/\t/, /g' -e 's/, $//')"
 
 if [[ "$COMMIT_SOURCE" == "message" ]]; then
     # Append coauthors if user has provided a shorthand commit message
