@@ -6,6 +6,7 @@ import { getContributors } from "../contributors.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
+import { Commit } from "./types.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -27,6 +28,12 @@ const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
 
   return markdownTable(matrix);
 };
+
+const coAuthors = (body: string) => {
+  const names = body.match(/Co-authors: (.*)/);
+  if (names === null) return [];
+  return names[1].split(',').map(name => name.trim());
+}
 
 export const matrix = async ({ after }: { after: string }) => {
   const CO_AUTHORS = "Co-authors: ";
@@ -62,24 +69,13 @@ export const matrix = async ({ after }: { after: string }) => {
 
   try {
     // @ts-ignore
-    const commits = await gitlog.gitlogPromise(options);
-    const pairingHistory = commits
-      .filter(
-        (commit: Record<string, any>) =>
-          commit.body.includes(CO_AUTHORS) && commit.body.split(CO_AUTHORS)[1]
-      )
-      .flatMap(({ authorName, body, authorDate, hash }: Record<string, any>) => {
-        const pairs = body
-          .split(CO_AUTHORS)[1]
-          .replace(/\n/g, " ")
-          .trim()
-          .split(", ");
-        return pairs.map((pair: string) => {
-          return { authorName, authorDate, pair, hash };
-        });
-      });
-
+    const commits: Commit[] = await gitlog.gitlogPromise(options);
     const warnings: string[] = [];
+    const pairingHistory = commits
+      .map(commit => ({commit, pairs: coAuthors(commit.body)}))
+      .flatMap(({commit: { authorName, authorDate, hash }, pairs}) =>
+        pairs.map((pair: string) => ({ authorName, authorDate, pair, hash }))
+      );
 
     pairingHistory.forEach(({ authorName, pair, hash, authorDate }: Record<string, any>) => {
       if (authorName === pair) {
