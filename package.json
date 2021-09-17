@@ -2,7 +2,7 @@
   "name": "pear-cli",
   "version": "2.4.12",
   "description": "A frictionless tool for tracking pair programming activity on teams",
-  "exports": "./dist/index.js",
+  "exports": ["./package.json", "./dist/index.js"],
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
