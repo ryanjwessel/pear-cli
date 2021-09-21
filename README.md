@@ -80,3 +80,11 @@ npx pear matrix -a "6 months ago" # Short-hand
 If you'd like to track your pairing history on your team, you can use this command to generate a Markdown table that highlights the number of days each of your teammates has paired with one another. 
 
 This will be stored in `./.pear/matrix.md`.
+
+### Upgrading this library
+
+```sh
+npx pear sync
+```
+
+For some version upgrades, the Git hooks files that are included in your `./.pear` directory could be updated. Currently, we don't have a nice way to make this automatic. But, if you run this command, it will ensure you be using the latest Git hooks scripts.

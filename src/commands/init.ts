@@ -1,23 +1,10 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
-import path from "path";
 import { writeContributors } from "../contributors.js";
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { syncFiles } from "./sync.js";
 
 const { prompt } = inquirer;
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const createGitIgnore = () => {
-  fs.writeFileSync("./.pear/.gitignore", "session", { encoding: "utf-8" });
-  console.info(chalk.yellowBright("Created .pear/.gitignore file."));
-};
-
-const createPearShellScript = () => {
-  fs.copyFileSync(path.join(__dirname, "../prepare-commit-msg.sh"), "./.pear/prepare-commit-msg.sh");
-  console.info(chalk.yellowBright("Created .pear/prepare-commit-msg.sh file."));
-};
 
 const addContributor = (contributors: string[]) => {
   const questions = [
@@ -55,8 +42,7 @@ export const init = () => {
     fs.mkdirSync("./.pear");
   }
 
-  createGitIgnore();
-  createPearShellScript();
+  syncFiles();
 
   console.info(
     chalk.yellowBright("Let's add contributors to your Pear configuration.")

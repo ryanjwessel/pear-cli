@@ -7,6 +7,7 @@ import { end } from "./commands/end.js";
 import { matrix } from "./commands/matrix.js";
 import { add } from "./commands/add.js";
 import { remove } from "./commands/remove.js";
+import { syncFiles } from "./commands/sync.js";
 
 const pear = new commander.Command();
 
@@ -45,5 +46,10 @@ pear
   .description("Remove a contributor from your Pear configuration")
   .argument("<contributor>", "The name of the contributor you are removing")
   .action(remove);
+
+pear
+  .command("sync")
+  .description("Sync your ./.pear directory to include the most up-to-date Shell scripts for Git hooks support.")
+  .action(syncFiles);
 
 pear.parse(process.argv);
