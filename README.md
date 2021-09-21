@@ -21,10 +21,10 @@ You will be prompted to add the names of your project contributors, which will b
 
 #### Required Git Hooks Setup
 
-`npx pear init` will also generate a `./.pear/pear.sh` file. You need to call this from your `prepare-commit-msg` file, like so:
+`npx pear init` will also generate a `./.pear/prepare-commit-msg.sh` file. You need to call this from your `prepare-commit-msg` file, like so:
 
 ```sh
-source ./.pear/pear.sh
+source ./.pear/prepare-commit-msg.sh
 ```
 
 This project uses [`husky`](https://github.com/typicode/husky) to manage Git hooks, but you are free to use whatever Git hooks setup that you like.

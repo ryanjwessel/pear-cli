@@ -15,8 +15,8 @@ const createGitIgnore = () => {
 };
 
 const createPearShellScript = () => {
-  fs.copyFileSync(path.join(__dirname, "../pear.sh"), "./.pear/pear.sh");
-  console.info(chalk.yellowBright("Created .pear/pear.sh file."));
+  fs.copyFileSync(path.join(__dirname, "../prepare-commit-msg.sh"), "./.pear/prepare-commit-msg.sh");
+  console.info(chalk.yellowBright("Created .pear/prepare-commit-msg.sh file."));
 };
 
 const addContributor = (contributors: string[]) => {
