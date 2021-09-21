@@ -16,6 +16,12 @@ if [ "$SHA1" ]; then
     exit 0;
 fi
 
+BRANCH_NAME=$(git branch | grep '*' | sed 's/* //');
+if [[ "$BRANCH_NAME" == *"(no branch"* ]]; then
+    # If current branch contains "(no branch" prefix, then we are rebasing. Don't modify the message.
+    exit 0;
+fi
+
 coauthors="Co-authors: $(paste -s $filename | sed -e 's/\t/, /g' -e 's/, $//')"
 
 if [[ "$COMMIT_SOURCE" == "message" ]]; then
