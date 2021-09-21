@@ -6,15 +6,11 @@ import { getContributors } from "../contributors.js";
 const { prompt } = inquirer;
 
 const createSessionFile = (pairs: string[]) => {
-  console.info(chalk.yellowBright("Creating pairing session file now"));
   writeFileSync("./.pear/session", pairs.join("\n"), { encoding: "utf-8" });
+  console.info(chalk.yellowBright("Created ./.pear/session file."));
 };
 
 export const start = () => {
-  console.info(
-    chalk.yellowBright("Let's add some pairs to your current session.")
-  );
-
   const contributors = getContributors();
 
   prompt([

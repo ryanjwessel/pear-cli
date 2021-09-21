@@ -10,13 +10,13 @@ const { prompt } = inquirer;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const createGitIgnore = () => {
-  console.info(chalk.yellowBright("Creating .pear/.gitignore now"));
   fs.writeFileSync("./.pear/.gitignore", "session", { encoding: "utf-8" });
+  console.info(chalk.yellowBright("Created .pear/.gitignore file."));
 };
 
 const createPearShellScript = () => {
-  console.info(chalk.yellowBright("Creating .pear/pear.sh now"));
   fs.copyFileSync(path.join(__dirname, "../pear.sh"), "./.pear/pear.sh");
+  console.info(chalk.yellowBright("Created .pear/pear.sh file."));
 };
 
 const addContributor = (contributors: string[]) => {
@@ -50,7 +50,7 @@ export const init = () => {
 
   if (!fs.existsSync("./.pear")) {
     console.info(
-      chalk.yellowBright(".pear directory not found, creating it now.")
+      chalk.yellowBright("Created .pear directory.")
     );
     fs.mkdirSync("./.pear");
   }

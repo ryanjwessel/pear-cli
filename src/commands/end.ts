@@ -8,6 +8,6 @@ export const end = () => {
       console.error(chalk.redBright("Could not remove Pear's session file."));
       return;
     }
-    console.info(chalk.yellowBright("Successfully ended pairing session."));
+    console.info(chalk.yellowBright("Ended pairing session."));
   });
 };

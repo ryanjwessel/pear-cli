@@ -12,8 +12,8 @@ export const getContributors = () => {
 };
 
 export const writeContributors = (contributors: string[]) => {
-  console.info(chalk.yellowBright("Updating .pear/contributors"));
   fs.writeFileSync("./.pear/contributors", contributors.join("\n"), {
     encoding: "utf-8",
   });
+  console.info(chalk.yellowBright("Updated .pear/contributors file."));
 };
