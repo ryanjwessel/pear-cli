@@ -20,7 +20,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "prepublish": "tsc && cp src/prepare-commit-msg.sh dist/prepare-commit-msg.sh"
+    "prepublish": "rm -rf dist && tsc && cp src/prepare-commit-msg.sh dist/prepare-commit-msg.sh"
   },
   "bin": {
     "pear": "./dist/cli.js"
