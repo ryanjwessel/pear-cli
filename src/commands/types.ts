@@ -5,6 +5,10 @@ export interface Commit {
   hash: string;
 }
 
+export interface CommitWithPair extends Omit<Commit, 'body'> {
+  pair: string;
+}
+
 interface PairData {
   count: number;
   lastPair: Date | -1;

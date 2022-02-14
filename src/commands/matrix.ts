@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 import chalk from "chalk";
 import { markdownTable } from "markdown-table";
 import { getContributors } from "../contributors.js";
-import { Matrix, Commit } from "./types.js";
+import { Matrix, Commit, CommitWithPair } from "./types.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CO_AUTHORS = "Co-authors: ";
@@ -34,71 +34,71 @@ const coAuthors = (body: string) => {
     return names[1].split(",").map((name) => name.trim());
 };
 
-const addPairingData = (matrix: Matrix, options: { after: string }) => {
-    try {
-        // @ts-ignore
-        const commits: Commit[] = await gitlog.gitlogPromise({
-            repo: __dirname,
-            number: 500,
-            after: options.after,
-            fields: ["hash", "authorName", "authorDate", "body"] as const,
-        });
-        const warnings: string[] = [];
-        const pairingHistory = commits
-            .map((commit) => ({ commit, pairs: coAuthors(commit.body) }))
-            .flatMap(({ commit: { authorName, authorDate, hash }, pairs }) =>
+const getPairingHistory = (options: { after: string }) => {
+    // @ts-ignore
+    const commits: Commit[] = await gitlog.gitlogPromise({
+        repo: __dirname,
+        number: 500,
+        after: options.after,
+        fields: ["hash", "authorName", "authorDate", "body"] as const,
+    });
+    return commits
+        .map((commit) => ({ commit, pairs: coAuthors(commit.body) }))
+        .flatMap<CommitWithPair>(
+            ({ commit: { authorName, authorDate, hash }, pairs }) =>
                 pairs.map((pair: string) => ({
                     authorName,
                     authorDate,
                     pair,
                     hash,
                 }))
-            );
-
-        pairingHistory.forEach(
-            ({ authorName, pair, hash, authorDate }: Record<string, any>) => {
-                if (authorName === pair) {
-                    warnings.push(
-                        `Don't include yourself in the "${CO_AUTHORS}" line, ${authorName}. See commit ${hash}`
-                    );
-                    return;
-                }
-                if (!(authorName in matrix)) {
-                    warnings.push(
-                        `${authorName} is not a known contributor. See commit ${hash}`
-                    );
-                    return;
-                }
-                if (!(pair in matrix)) {
-                    warnings.push(
-                        `${pair} is not a known contributor. See commit ${hash}`
-                    );
-                    return;
-                }
-
-                const date = dateFn.parseISO(authorDate.split(" ")[0]);
-                if (!dateFn.isEqual(matrix[authorName][pair].lastPair, date)) {
-                    matrix[authorName][pair].count += 1;
-                    matrix[pair][authorName].count += 1;
-                }
-
-                matrix[authorName][pair].lastPair = date;
-                matrix[pair][authorName].lastPair = date;
-            }
         );
+};
 
-        warnings.forEach((warning) => console.warn(warning));
+const validatePairCommits = (commit: CommitWithPair) => {
+    const { authorName, pair, hash } = commit;
+    const warnings: string[] = [];
+    if (authorName === pair) {
+        warnings.push(
+            `Don't include yourself in the "${CO_AUTHORS}" line, ${authorName}. See commit ${hash}`
+        );
+    }
+    if (!(authorName in matrix)) {
+        warnings.push(
+            `${authorName} is not a known contributor. See commit ${hash}`
+        );
+    }
+    if (!(pair in matrix)) {
+        warnings.push(`${pair} is not a known contributor. See commit ${hash}`);
+    }
+    warnings.forEach((warning) => console.warn(warning));
+    return commit;
+};
 
-        return matrix;
+const updatePairMetrics = (
+    matrix: Matrix,
+    { authorDate, authorName, pair }: CommitWithPair
+) => {
+    const date = dateFn.parseISO(authorDate.split(" ")[0]);
+    if (!dateFn.isEqual(matrix[authorName][pair].lastPair, date)) {
+        matrix[authorName][pair].count += 1;
+        matrix[pair][authorName].count += 1;
+    }
+    matrix[authorName][pair].lastPair = date;
+    matrix[pair][authorName].lastPair = date;
+    return matrix;
+};
+
+const addPairingData = (matrix: Matrix, options: { after: string }) => {
+    try {
+        return getPairingHistory(options)
+            .map(validatePairCommits)
+            .reduce(updatePairMetrics, matrix);
     } catch (error) {
         console.error(chalk.redBright(error));
-        console.error(
-            chalk.redBright(
-                "Sorry, we were unable to generate a pairing matrix for your team."
-            )
+        throw new Error(
+            "Sorry, we were unable to generate a pairing matrix for your team."
         );
-
-        return {};
     }
 };
 
