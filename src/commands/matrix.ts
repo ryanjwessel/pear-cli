@@ -29,7 +29,7 @@ const initializeMatrix = () => {
 };
 
 const coAuthors = (body: string) => {
-    const names = body.match(/Co-authors: (.*)/);
+    const names = body.match(/Co-authors: (.+)/);
     if (names === null) return [];
     return names[1].split(",").map((name) => name.trim());
 };
