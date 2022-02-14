@@ -9,6 +9,7 @@ import { getContributors } from "../contributors.js";
 import { Matrix, Commit } from "./types.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const CO_AUTHORS = "Co-authors: ";
 
 const initializeMatrix = () => {
     const matrix: Matrix = {};
@@ -33,52 +34,15 @@ const coAuthors = (body: string) => {
     return names[1].split(",").map((name) => name.trim());
 };
 
-const generateTableFrom = (matrix: Matrix) => {
-    const table: Record<string, Record<string, number>> = {};
-
-    for (const [contributor, pairs] of Object.entries(matrix)) {
-        table[contributor] = {};
-        for (const [pair, stats] of Object.entries(pairs)) {
-            table[contributor][pair] = stats.count;
-        }
-    }
-    return table;
-};
-
-const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
-    const matrix = [["", ...Object.keys(table)]];
-
-    Object.keys(table).forEach((contributor, cIndex) => {
-        let row = [contributor];
-
-        Object.keys(table[contributor]).forEach((pair, pIndex) => {
-            if (pIndex < cIndex) {
-                row.push(table[contributor][pair].toString());
-            } else {
-                row.push("");
-            }
-        });
-        matrix.push(row);
-    });
-
-    return markdownTable(matrix);
-};
-
-export const matrix = async ({ after }: { after: string }) => {
-    const CO_AUTHORS = "Co-authors: ";
-
-    const matrix = initializeMatrix();
-
-    const options = {
-        repo: __dirname,
-        number: 500,
-        after,
-        fields: ["hash", "authorName", "authorDate", "body"] as const,
-    };
-
+const addPairingData = (matrix: Matrix, options: { after: string }) => {
     try {
         // @ts-ignore
-        const commits: Commit[] = await gitlog.gitlogPromise(options);
+        const commits: Commit[] = await gitlog.gitlogPromise({
+            repo: __dirname,
+            number: 500,
+            after: options.after,
+            fields: ["hash", "authorName", "authorDate", "body"] as const,
+        });
         const warnings: string[] = [];
         const pairingHistory = commits
             .map((commit) => ({ commit, pairs: coAuthors(commit.body) }))
@@ -125,13 +89,7 @@ export const matrix = async ({ after }: { after: string }) => {
 
         warnings.forEach((warning) => console.warn(warning));
 
-        fs.writeFileSync(
-            "./.pear/matrix.md",
-            outputMarkdownTable(generateTableFrom(matrix)),
-            {
-                encoding: "utf-8",
-            }
-        );
+        return matrix;
     } catch (error) {
         console.error(chalk.redBright(error));
         console.error(
@@ -139,5 +97,53 @@ export const matrix = async ({ after }: { after: string }) => {
                 "Sorry, we were unable to generate a pairing matrix for your team."
             )
         );
+
+        return {};
     }
+};
+
+const generateTableFrom = (matrix: Matrix) => {
+    const table: Record<string, Record<string, number>> = {};
+
+    for (const [contributor, pairs] of Object.entries(matrix)) {
+        table[contributor] = {};
+        for (const [pair, stats] of Object.entries(pairs)) {
+            table[contributor][pair] = stats.count;
+        }
+    }
+    return table;
+};
+
+const outputMarkdownTable = (table: Record<string, Record<string, number>>) => {
+    const matrix = [["", ...Object.keys(table)]];
+
+    Object.keys(table).forEach((contributor, cIndex) => {
+        let row = [contributor];
+
+        Object.keys(table[contributor]).forEach((pair, pIndex) => {
+            if (pIndex < cIndex) {
+                row.push(table[contributor][pair].toString());
+            } else {
+                row.push("");
+            }
+        });
+        matrix.push(row);
+    });
+
+    return markdownTable(matrix);
+};
+
+const createFileFrom = (matrix: Matrix) => {
+    fs.writeFileSync(
+        "./.pear/matrix.md",
+        outputMarkdownTable(generateTableFrom(matrix)),
+        {
+            encoding: "utf-8",
+        }
+    );
+};
+
+export const matrix = async (options: { after: string }) => {
+    const matrix = addPairingData(initializeMatrix(), options);
+    createFileFrom(matrix);
 };
