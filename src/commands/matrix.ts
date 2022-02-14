@@ -72,7 +72,7 @@ const validatePairCommits = (commit: CommitWithPair, matrix: Matrix) => {
         warnings.push(`${pair} is not a known contributor. See commit ${hash}`);
     }
     warnings.forEach((warning) => console.warn(warning));
-    return commit;
+    return warnings.length === 0;
 };
 
 const updatePairMetrics = (matrix: Matrix, commit: CommitWithPair) => {
@@ -95,7 +95,7 @@ const addPairingData = async (matrix: Matrix, options: { after: string }) => {
         const commits = await getPairingHistory(options);
 
         return commits
-            .map((commit) => validatePairCommits(commit, matrix))
+            .filter((commit) => validatePairCommits(commit, matrix))
             .reduce(updatePairMetrics, matrix);
     } catch (error) {
         console.error(chalk.redBright(error));
