@@ -12,20 +12,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const CO_AUTHORS = "Co-authors: ";
 
 const initializeMatrix = () => {
-    const matrix: Matrix = {};
+    const contributors = getContributors().filter(
+        (contributor) => contributor && contributor.length > 0
+    );
 
-    const contributors = getContributors();
-
-    contributors.forEach((contributor) => {
+    return contributors.reduce((matrix, contributor) => {
         matrix[contributor] = {};
+
         contributors
             .filter((pair) => pair !== contributor)
             .forEach((pair) => {
                 matrix[contributor][pair] = { count: 0, lastPair: -1 };
             });
-    });
 
-    return matrix;
+        return matrix;
+    }, {} as Matrix);
 };
 
 const coAuthors = (body: string) => {
