@@ -75,10 +75,11 @@ const validatePairCommits = (commit: CommitWithPair, matrix: Matrix) => {
     return commit;
 };
 
-const updatePairMetrics = (
-    matrix: Matrix,
-    { authorDate, authorName, pair }: CommitWithPair
-) => {
+const updatePairMetrics = (matrix: Matrix, commit: CommitWithPair) => {
+    console.log("updating metrics");
+    console.log(matrix);
+    console.log(commit);
+    const { authorDate, authorName, pair } = commit;
     const date = dateFn.parseISO(authorDate.split(" ")[0]);
     if (!dateFn.isEqual(matrix[authorName][pair].lastPair, date)) {
         matrix[authorName][pair].count += 1;
