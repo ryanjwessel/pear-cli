@@ -34,7 +34,7 @@ const coAuthors = (body: string) => {
     return names[1].split(",").map((name) => name.trim());
 };
 
-const getPairingHistory = (options: { after: string }) => {
+const getPairingHistory = async (options: { after: string }) => {
     // @ts-ignore
     const commits: Commit[] = await gitlog.gitlogPromise({
         repo: __dirname,
@@ -89,9 +89,11 @@ const updatePairMetrics = (
     return matrix;
 };
 
-const addPairingData = (matrix: Matrix, options: { after: string }) => {
+const addPairingData = async (matrix: Matrix, options: { after: string }) => {
     try {
-        return getPairingHistory(options)
+        const commits = await getPairingHistory(options);
+
+        return commits
             .map(validatePairCommits)
             .reduce(updatePairMetrics, matrix);
     } catch (error) {
@@ -144,6 +146,6 @@ const createFileFrom = (matrix: Matrix) => {
 };
 
 export const matrix = async (options: { after: string }) => {
-    const matrix = addPairingData(initializeMatrix(), options);
+    const matrix = await addPairingData(initializeMatrix(), options);
     createFileFrom(matrix);
 };
