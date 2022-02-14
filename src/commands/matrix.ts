@@ -55,7 +55,7 @@ const getPairingHistory = async (options: { after: string }) => {
         );
 };
 
-const validatePairCommits = (commit: CommitWithPair) => {
+const validatePairCommits = (commit: CommitWithPair, matrix: Matrix) => {
     const { authorName, pair, hash } = commit;
     const warnings: string[] = [];
     if (authorName === pair) {
@@ -94,7 +94,7 @@ const addPairingData = async (matrix: Matrix, options: { after: string }) => {
         const commits = await getPairingHistory(options);
 
         return commits
-            .map(validatePairCommits)
+            .map((commit) => validatePairCommits(commit, matrix))
             .reduce(updatePairMetrics, matrix);
     } catch (error) {
         console.error(chalk.redBright(error));
